@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1>mat sorusunu çöz</h1>
+  </body>
+</html><!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matematik Sorusunu çözerek sonuca ulaş</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #question {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #askButton, #submitAnswer {
+            background-color: green;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        #askButton:hover, #submitAnswer:hover {
+            background-color: darkred;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        #smiley {
+            font-size: 50px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="question">Butona basarak rastgele bir matematik sorusu alın!</div>
+    <button id="askButton">Soru Sor</button>
+
+    <div id="answerSection" style="display: none;">
+        <input type="text" id="answer" placeholder="Cevabınızı girin">
+        <button id="submitAnswer">Cevabı Gönder</button>
+    </div>
+
+    <div id="result"></div>
+    <div id="smiley">😊🍆</div>
+
+    <script>
+        let correctAnswer;
+
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function generateQuestion() {
+            const num1 = getRandomNumber(1, 10);
+            const num2 = getRandomNumber(1, 10);
+            const operations = ['+', '-', '*', '/'];
+            const randomOperation = operations[Math.floor(Math.random() * operations.length)];
+
+            // İşlem türüne göre doğru cevabı hesapla
+            switch (randomOperation) {
+                case '+':
+                    correctAnswer = num1 + num2;
+                    break;
+                case '-':
+                    correctAnswer = num1 - num2;
+                    break;
+                case '*':
+                    correctAnswer = num1 * num2;
+                    break;
+                case '/':
+                    correctAnswer = Math.round((num1 / num2) * 100) / 100; // Virgülden sonra 2 basamak
+                    break;
+            }
+
+            // Soruyu ekrana yazdır
+            let question = `${num1} ${randomOperation} ${num2} = ?`;
+            document.getElementById('question').innerText = question;
+
+            // Cevap bölümünü göster
+            document.getElementById('answerSection').style.display = 'block';
+            document.getElementById('result').innerText = '';
+            document.getElementById('smiley').style.display = 'none';
+            document.getElementById('answer').value = '';  // Cevap kutusunu sıfırla
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseFloat(document.getElementById('answer').value);
+            const resultDiv = document.getElementById('result');
+
+            if (userAnswer === correctAnswer) {
+                resultDiv.innerText = 'Doğru cevap!';
+                document.getElementById('smiley').style.display = 'block';
+            } else {
+                resultDiv.innerText = 'Yanlış cevap, tekrar deneyin.';
+                document.getElementById('smiley').style.display = 'none';
+            }
+        }
+
+        document.getElementById('askButton').addEventListener('click', generateQuestion);
+        document.getElementById('submitAnswer').addEventListener('click', checkAnswer);
+    </script>
+</body>
+</html>
